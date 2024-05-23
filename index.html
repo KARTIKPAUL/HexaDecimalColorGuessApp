@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HexaDecimal Color Guessing App</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body{
+            font-family: Arial, Helvetica, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+        .gameContainer{
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .colorDisplay{
+            width: 100px;
+            height: 100px;
+            margin: 20px auto;
+            border: 1px solid #000000;
+            border-radius: 5px;
+        }
+        .optionContainer{
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .optionContainer button{
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            background-color:#007BFF;
+            border-radius: 5px;
+        }
+        
+        .options-container button:hover {
+            background-color: #0056b3;
+        }
+        #btn{
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            background-color: #29e429;
+            margin-top: 20px;
+            padding:10px 20px;
+            color: #fff;
+            cursor: pointer;
+        }
+        #btn:hover{
+            background-color: #0bb30b;
+        }
+        #resultMessage{
+            margin-top: 20px;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="gameContainer">
+        <h1>HexaDecimal Color Guessing App</h1>
+        <div class="colorDisplay" id="colorDisplay"></div>
+        <div class="optionContainer" id="optionContainer"></div>
+        <button id="btn">New Game</button>
+        <p id="resultMessage"></p>
+    </div>
+
+
+    <script>
+
+        const colorDisplay = document.getElementById('colorDisplay');
+        const optionContainer = document.getElementById('optionContainer');
+        const btn = document.getElementById('btn');
+        const resultMessage = document.getElementById('resultMessage');
+
+        let correctHex;
+        
+        function generateRandomHexColor(){
+            let val = "0123456789ABCDEF";
+            let cons = "#";
+            for(let i = 0 ; i < 6; i++){
+                cons = cons + val[Math.floor(Math.random() * 16)];
+            }
+            return cons;
+        }
+        
+        function setNewGame(){
+            correctHex = generateRandomHexColor();
+            colorDisplay.style.backgroundColor = correctHex;
+            resultMessage.textContent = '';
+
+
+            const options = [correctHex , generateRandomHexColor(),generateRandomHexColor()];
+
+            options.sort(()=> Math.random() - 0.5);
+
+            optionContainer.innerHTML = '';
+
+            options.forEach(hex => {
+                const button = document.createElement('button');
+                button.textContent = hex;
+
+                button.addEventListener('click',()=> checkAnswer(hex));
+
+                optionContainer.appendChild(button);
+
+            });
+
+        }
+
+        function checkAnswer(hex){
+            if(hex === correctHex){
+                resultMessage.textContent = "Correct !";
+                resultMessage.style.color = "green";
+            }else{
+                resultMessage.textContent = "Wrong Answer ,Try Again !";
+                resultMessage.style.color = "red";
+            }
+        }
+
+        btn.addEventListener('click',setNewGame);
+
+        setNewGame();
+
+    </script>
+</body>
+</html>
